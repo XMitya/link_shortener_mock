@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LinkShortenerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LinkShortenerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LinkShortenerApplication.class, args);
+    }
 
 }
