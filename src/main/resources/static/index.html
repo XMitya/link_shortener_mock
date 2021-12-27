@@ -18,7 +18,7 @@
                 $.ajax({
                     type: "POST",
                     url: "/shorten",
-                    data: JSON.stringify({longLink: $("#longLink").innerText}),
+                    data: JSON.stringify({longLink: $("#longLink").val()}),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
