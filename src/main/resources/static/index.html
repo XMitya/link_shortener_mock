@@ -11,8 +11,8 @@
             integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
             crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
-            $("#submitForm").submit(function(e){
+        $(document).ready(() => {
+            $("#submitForm").submit(e => {
                 e.preventDefault();
 
                 $.ajax({
@@ -21,9 +21,10 @@
                     data: JSON.stringify({longLink: $("#longLink").val()}),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function (data) {
-                        console.log(data.shortLink)
-                        $("#shortLink").val(window.location.origin + "/l/" + data.shortLink)
+                    success: data => {
+                        $("#shortLink")
+                            .val(`${window.location.origin}/l/${data.shortLink}`)
+                            .select()
                     },
                     error: function (errMsg) {
                         console.error(errMsg)
@@ -31,6 +32,8 @@
                 })
             });
 
+            $("#shortLink").click(e => e.currentTarget.select())
+            $("#longLink").click(e => e.currentTarget.select())
         });
     </script>
 </head>
@@ -39,8 +42,8 @@
     <div class="mb-3">
         <label for="longLink" class="form-label">Put long link here</label>
         <input type="url" class="form-control" id="longLink" placeholder="Long link">
+        <label for="shortLink" class="form-label">Your short link</label>
         <input type="url" class="form-control" id="shortLink" placeholder="Your short link">
-
     </div>
     <button id="shortenLink" type="submit" class="btn btn-primary">Shorten</button>
 </form>
