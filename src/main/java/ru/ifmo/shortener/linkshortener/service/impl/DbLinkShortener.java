@@ -24,7 +24,7 @@ public class DbLinkShortener implements LinkShortenerService {
         String rnd;
         do {
             rnd = randomString(5);
-        } while (linkRepository.insert(new LinkEntity(rnd, longLink.getLongLink())) == 0);
+        } while (!linkRepository.insertIfAbsent(new LinkEntity(rnd, longLink.getLongLink())));
 
         return new ShortLink(rnd);
     }
