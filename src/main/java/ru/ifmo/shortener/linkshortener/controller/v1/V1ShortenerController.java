@@ -28,12 +28,13 @@ public class V1ShortenerController {
 
     @GetMapping("l/{rnd}")
     public ResponseEntity<Void> expand(@PathVariable String rnd) {
-        return linkShortenerService.expand(new ShortLink(rnd)).map(longLink -> {
-            final HttpHeaders headers = new HttpHeaders();
-            headers.put("Location", List.of(longLink.getLongLink()));
+        return linkShortenerService.expand(new ShortLink(rnd))
+                .map(longLink -> {
+                    final HttpHeaders headers = new HttpHeaders();
+                    headers.put("Location", List.of(longLink.getLongLink()));
 
-            return new ResponseEntity<Void>(headers, HttpStatus.MOVED_PERMANENTLY);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                    return new ResponseEntity<Void>(headers, HttpStatus.MOVED_PERMANENTLY);
+                }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }
