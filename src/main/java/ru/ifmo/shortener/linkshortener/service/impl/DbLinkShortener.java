@@ -3,7 +3,6 @@ package ru.ifmo.shortener.linkshortener.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.ifmo.shortener.linkshortener.LinkRepository;
 import ru.ifmo.shortener.linkshortener.entity.LinkEntity;
 import ru.ifmo.shortener.linkshortener.model.LongLink;
@@ -21,16 +20,11 @@ public class DbLinkShortener implements LinkShortenerService {
     private final LinkRepository linkRepository;
 
     @Override
-    @Transactional
     public ShortLink shorten(LongLink longLink) {
         String rnd;
         do {
             rnd = randomString(5);
-        } while (linkRepository.existsById(rnd));
-
-        val entity = new LinkEntity(rnd, longLink.getLongLink());
-
-        linkRepository.insert(entity);
+        } while (linkRepository.insert(new LinkEntity(rnd, longLink.getLongLink())) == 0);
 
         return new ShortLink(rnd);
     }

@@ -9,11 +9,11 @@ import ru.ifmo.shortener.linkshortener.entity.LinkEntity;
 
 @Repository
 public interface LinkRepository extends CrudRepository<LinkEntity, String> {
-    default void insert(@Param("entity") LinkEntity entity) {
-        insert(entity.getShortString(), entity.getLongLink());
+    default int insert(@Param("entity") LinkEntity entity) {
+        return insert(entity.getShortString(), entity.getLongLink());
     }
 
     @Modifying
-    @Query("insert into links (short_string, long_link) values (:shortString, :longLink)")
-    void insert(String shortString, String longLink);
+    @Query("insert into links (short_string, long_link) values (:shortString, :longLink) on conflict do nothing")
+    int insert(String shortString, String longLink);
 }
