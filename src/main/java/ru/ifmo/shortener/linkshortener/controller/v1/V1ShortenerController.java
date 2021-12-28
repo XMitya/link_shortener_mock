@@ -11,7 +11,6 @@ import ru.ifmo.shortener.linkshortener.model.ShortLink;
 import ru.ifmo.shortener.linkshortener.service.LinkShortenerService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -29,16 +28,12 @@ public class V1ShortenerController {
 
     @GetMapping("l/{rnd}")
     public ResponseEntity<Void> expand(@PathVariable String rnd) {
-        final Optional<LongLink> expanded = linkShortenerService.expand(new ShortLink(rnd));
+        return linkShortenerService.expand(new ShortLink(rnd)).map(longLink -> {
+            final HttpHeaders headers = new HttpHeaders();
+            headers.put("Location", List.of(longLink.getLongLink()));
 
-        if (expanded.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.put("Location", List.of(expanded.get().getLongLink()));
-
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+            return new ResponseEntity<Void>(headers, HttpStatus.MOVED_PERMANENTLY);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }
