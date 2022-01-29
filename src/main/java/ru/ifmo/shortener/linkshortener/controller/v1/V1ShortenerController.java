@@ -28,7 +28,7 @@ public class V1ShortenerController {
     @GetMapping("l/{rnd}")
     public ModelAndView expand(@PathVariable String rnd) {
         return linkShortenerService.expand(new ShortLink(rnd))
-                .map(longLink -> new ModelAndView("redirect:" + longLink))
+                .map(longLink -> new ModelAndView("redirect:" + longLink.getLongLink()))
                 .orElseGet(() -> new ModelAndView("/404", Map.of("rnd", rnd), HttpStatus.NOT_FOUND));
     }
 
